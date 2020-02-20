@@ -1,6 +1,11 @@
 const MovingObject = require("./movingObject.js");
+const Asteroid = require("./asteroid.js")
+const Ship = require('./ship.js')
 
 const objectArray = []
+const shipArray = []
+
+
 
 colorHash = {
     '0': 'red',
@@ -15,9 +20,19 @@ colorCalculator = function(){
     return color;
 }
 
+shipArray.push(
+  new Ship({
+    pos: [200, 200],
+    vel: [Math.random() * 10, Math.random() * 10],
+    radius: 20,
+    color: colorCalculator(),
+    game: "THIS IS A PLACEHOLDER"
+  })
+);
+
 for(let i=0; i<10; i++){
 objectArray.push(
-  new MovingObject({
+  new Asteroid({
     pos: [Math.random() * 400, Math.random() * 400],
     vel: [Math.random() * 10, Math.random() * 10],
     radius: 20,
@@ -38,15 +53,12 @@ document.addEventListener("DOMContentLoaded", function() {
   
   
   const draw = function(){objectArray.forEach((el) => {
-      ctx.beginPath();
-      ctx.arc(el.pos[0], el.pos[1], el.radius, 0, 2 * Math.PI, true);
-      ctx.strokeStyle = el.color;
-      ctx.lineWidth = 5;
-      ctx.stroke();
-      ctx.fillStyle = el.color;
-      ctx.fill();
+      el.draw(ctx)
     })
 }
+    const drawShip = function(){
+        shipArray[0].draw(ctx)
+    }
 const asteroidMove = function() {objectArray.forEach((el) => {
     el.move();
     // setInterval(() => console.log('hello'), 3000);
@@ -60,8 +72,35 @@ const checkAllCollision = function() {
         }
     }
 }
+
+document.onkeydown = function(e){
+    e = e || window.event;
+    switch(e.which || e.keyCode) {
+        case 37: // left
+        shipArray[0].move('left')
+        break;
+
+        case 38: // up
+        shipArray[0].move("up");
+        break;
+
+        case 39: // right
+        shipArray[0].move("right");
+        break;
+
+        case 40: // down
+        shipArray[0].move("down");
+        break;
+
+        default: return; // exit this handler for other keys
+    }
+    e.preventDefault(); // prevent the default action (scroll / move caret)
+};
+
+
 setInterval(() => draw(ctx.clearRect(0, 0, canvasEl.width, canvasEl.height)), 100);
 setInterval(() => draw(), 100);
+setInterval(() => drawShip(), 100)
 setInterval(() => asteroidMove(), 100);
 setInterval(() => checkAllCollision(), 100);
 
@@ -81,4 +120,5 @@ setInterval(() => checkAllCollision(), 100);
 
 
 window.MovingObject = MovingObject;
+window.Asteroid = Asteroid;
 console.log('hello')
