@@ -1,24 +1,12 @@
-const MovingObject = require("./movingObject.js");
-const Asteroid = require("./asteroid.js")
-const Ship = require('./ship.js')
+const MovingObject = require("./movingObject");
+const Asteroid = require("./asteroid")
+const Ship = require('./ship')
+const Bullet = require('./bullet')
+const Util = require('./util')
 
 const objectArray = []
 const shipArray = []
-
-
-
-colorHash = {
-    '0': 'red',
-    '1': 'green',
-    '2': 'blue',
-    '3': 'orange'
-}
-
-colorCalculator = function(){
-    let num = (Math.floor(Math.random()*4));
-    color = colorHash[num.toString()];
-    return color;
-}
+const bulletArray = []
 
 shipArray.push(
   new Ship({
@@ -31,24 +19,22 @@ shipArray.push(
 );
 
 for(let i=0; i<10; i++){
-objectArray.push(
-  new Asteroid({
-    pos: [Math.random() * 400, Math.random() * 400],
-    vel: [Math.random() * 10, Math.random() * 10],
-    radius: 20,
-    color: colorCalculator(),
-    game: 'THIS IS A PLACEHOLDER'
-  })
-);
+    debugger;
+    objectArray.push(
+      new Asteroid({
+        pos: [Math.random() * 400, Math.random() * 400],
+        vel: [Math.random() * 10, Math.random() * 10],
+        radius: 20,
+        color: colorCalculator(),
+        game: "THIS IS A PLACEHOLDER"
+      })
+    );
 }
-
-
-
 document.addEventListener("DOMContentLoaded", function() {
 
   const canvasEl = document.getElementById("game-canvas");
-  canvasEl.width = 500;
-  canvasEl.height = 500;
+  canvasEl.width = gameWidth;
+  canvasEl.height = gameHeight;
   const ctx = canvasEl.getContext("2d");
   
   
@@ -65,15 +51,7 @@ const asteroidMove = function() {objectArray.forEach((el) => {
 })
 }
 
-const checkAllCollision = function() {
-    for(let i=0; i<objectArray.length; i++){
-        for(let j=i+1; j<objectArray.length; j++){
-            objectArray[i].checkForCollision(objectArray[j])
-        }
-    }
-}
-
-document.onkeydown = function(e){
+const shipKeys = document.onkeydown = function(e){
     e = e || window.event;
     switch(e.which || e.keyCode) {
         case 37: // left
@@ -97,28 +75,12 @@ document.onkeydown = function(e){
     e.preventDefault(); // prevent the default action (scroll / move caret)
 };
 
-
 setInterval(() => draw(ctx.clearRect(0, 0, canvasEl.width, canvasEl.height)), 100);
 setInterval(() => draw(), 100);
 setInterval(() => drawShip(), 100)
 setInterval(() => asteroidMove(), 100);
-setInterval(() => checkAllCollision(), 100);
-
-// setInterval(() => ctx.clearRect(0, 0, 1000, 1000), 1000);
-
-    // debugger;
-
-//   ctx.beginPath();
-//   ctx.arc(100, 100, 20, 0, 2 * Math.PI, true);
-//   ctx.strokeStyle = "green";
-//   ctx.lineWidth = 5;
-//   ctx.stroke();
-//   ctx.fillStyle = "blue";
-//   ctx.fill();
+// setInterval(() => checkAllCollision(), 100);
 
 });
 
-
-window.MovingObject = MovingObject;
-window.Asteroid = Asteroid;
 console.log('hello')
