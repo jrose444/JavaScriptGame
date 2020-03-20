@@ -3,33 +3,27 @@ const Asteroid = require("./asteroid")
 const Ship = require('./ship')
 const Bullet = require('./bullet')
 const Util = require('./util')
+const Game = require('./game')
 
-const objectArray = []
-const shipArray = []
-const bulletArray = []
+// const objectArray = []
+// const shipArray = []
+// const bulletArray = []
 
-shipArray.push(
-  new Ship({
-    pos: [200, 200],
-    vel: [Math.random() * 10, Math.random() * 10],
-    radius: 20,
-    color: colorCalculator(),
-    game: "THIS IS A PLACEHOLDER"
-  })
-);
+let game = new Game
 
 for(let i=0; i<10; i++){
-    debugger;
-    objectArray.push(
+  // debugger;
+    game.asteroids.push(
       new Asteroid({
         pos: [Math.random() * 400, Math.random() * 400],
         vel: [Math.random() * 10, Math.random() * 10],
         radius: 20,
         color: colorCalculator(),
-        game: "THIS IS A PLACEHOLDER"
+        game: game
       })
     );
 }
+
 document.addEventListener("DOMContentLoaded", function() {
 
   const canvasEl = document.getElementById("game-canvas");
@@ -38,36 +32,50 @@ document.addEventListener("DOMContentLoaded", function() {
   const ctx = canvasEl.getContext("2d");
   
   
-  const draw = function(){objectArray.forEach((el) => {
+  const draw = function(){game.asteroids.forEach((el) => {
       el.draw(ctx)
-    })
+    });
+    game.bullets.forEach((el) => {
+      el.draw(ctx)
+    });
 }
     const drawShip = function(){
-        shipArray[0].draw(ctx)
+        game.ship.draw(ctx)
     }
-const asteroidMove = function() {objectArray.forEach((el) => {
-    el.move();
-    // setInterval(() => console.log('hello'), 3000);
-})
-}
+  const everythingMove = function() {game.asteroids.forEach((el) => {
+      el.move();})
+    game.bullets.forEach((el) => {
+      el.move();
+      // setInterval(() => console.log('hello'), 3000);
+  })};
 
 const shipKeys = document.onkeydown = function(e){
     e = e || window.event;
     switch(e.which || e.keyCode) {
         case 37: // left
-        shipArray[0].move('left')
+        game.ship.move('left')
         break;
 
         case 38: // up
-        shipArray[0].move("up");
+        game.ship.move("up");
         break;
 
         case 39: // right
-        shipArray[0].move("right");
+        game.ship.move("right");
         break;
 
         case 40: // down
-        shipArray[0].move("down");
+        game.ship.move("down");
+        break;
+
+        case 32:
+        game.bullets.push(new Bullet({
+          pos: game.ship.pos,
+          vel: [0, -20],
+          radius: 5,
+          color: colorCalculator(),
+          game: game
+        }));
         break;
 
         default: return; // exit this handler for other keys
@@ -78,9 +86,10 @@ const shipKeys = document.onkeydown = function(e){
 setInterval(() => draw(ctx.clearRect(0, 0, canvasEl.width, canvasEl.height)), 100);
 setInterval(() => draw(), 100);
 setInterval(() => drawShip(), 100)
-setInterval(() => asteroidMove(), 100);
+setInterval(() => everythingMove(), 100);
 // setInterval(() => checkAllCollision(), 100);
 
 });
 
 console.log('hello')
+window.game = game

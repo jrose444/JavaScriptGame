@@ -24,7 +24,19 @@ class Ship extends MovingObject {
       console.log('bro get your shuip together')
     // code block
 }
+
+    if (this.pos[0] >= 500) {
+      this.pos = [(this.pos[0] = 0), this.pos[1]];
+    } else if (this.pos[1] > 500) {
+      this.pos = [this.pos[0], (this.pos[1] = 0)];
     }
+      else if (this.pos[0] < 0) {
+      this.pos = [(this.pos[0] = 500), this.pos[1]];
+    } else if (this.pos[1] < 0) {
+      this.pos = [this.pos[0], (this.pos[1] = 500)];
+    }
+    }
+    
 };
   
 

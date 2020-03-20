@@ -8,6 +8,10 @@ class Bullet extends MovingObject {
   something() {
     console.log("hihihihihih");
   }
+
+  move() {
+    this.pos = [this.pos[0] + this.vel[0], this.pos[1] + this.vel[1]];
+  }
 }
 
 // debugger;
