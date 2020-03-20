@@ -18,7 +18,10 @@ class MovingObject{
     }
 
     checkForCollision(object){
-        const circle1 = { radius: this.radius, x: this.pos[0], y: this.pos[1] };
+        const circle1 = { radius: this.radius, 
+          x: this.pos[0], 
+          y: this.pos[1] };
+
         const circle2 = {
           radius: object.radius,
           x: object.pos[0],
@@ -30,6 +33,7 @@ class MovingObject{
         const distance = Math.sqrt(dx * dx + dy * dy);
 
         if (distance < circle1.radius + circle2.radius) {
+          console.log('yeeeeeee boy')
         }
     }
 

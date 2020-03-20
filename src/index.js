@@ -49,6 +49,24 @@ document.addEventListener("DOMContentLoaded", function() {
       // setInterval(() => console.log('hello'), 3000);
   })};
 
+  // const checkAllCollision = function() {
+  //   if(game.bullets.length){
+  //     for(let i = 0; i<game.asteroids.length; i++){
+  //       for(let j = 0; j<game.asteroids.length; j++){
+  //         debugger;
+  //         game.bullets[j].checkForCollision(game.asteroids[i])
+  //       }
+  //     }};
+  // }
+
+  const checkAllCollision = function () {
+    for (let i = 0; i < game.asteroids.length; i++) {
+      for (let j = 0; j < game.bullets.length; j++) {
+        if(game.bullets.length)game.asteroids[i].checkForCollision(game.bullets[j])
+      }
+    }
+  }
+
 const shipKeys = document.onkeydown = function(e){
     e = e || window.event;
     switch(e.which || e.keyCode) {
@@ -82,11 +100,12 @@ const shipKeys = document.onkeydown = function(e){
     }
     e.preventDefault(); // prevent the default action (scroll / move caret)
 };
-
+// debugger;
 setInterval(() => draw(ctx.clearRect(0, 0, canvasEl.width, canvasEl.height)), 100);
 setInterval(() => draw(), 100);
 setInterval(() => drawShip(), 100)
 setInterval(() => everythingMove(), 100);
+setInterval(() => checkAllCollision(), 100);
 // setInterval(() => checkAllCollision(), 100);
 
 });
